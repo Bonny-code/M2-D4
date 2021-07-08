@@ -1,25 +1,48 @@
 
 
-
 function groupSelector() {
-    var input = document.getElementById("inputText").value;
-    var names = input.replace(/\s*,\s*|\n/g, ",").split(",");
-    
-    var groupSize = document.getElementById("groupNumber").value;
-    var groupCount = Math.ceil(names.length / groupSize);
-    var groups = [...Array(groupCount)].map(() => Array());
-    
-    var i = 0
-    while (names.length > 0) {
-        var m = Math.floor(Math.random() * names.length);
-        groups[i].push(names[m]);
-        names.splice(m, 1);
-        i = (i >= groupCount - 1) ? 0 : i + 1
+    let input = document.getElementById("inputText").value;
+    let names = input.split(",");
+
+    let groupSize = document.getElementById("groupNumber").value;
+    let groupCount = Math.ceil(names.length / groupSize);
+    let groups = [];
+
+    for (let i = 0; i < groupCount; i++) {
+        let group = [];
+        for (let j = 0; j < groupSize; j++) {
+            let random = Math.floor(Math.random() * names.length);
+            let name = names[random];
+            if (name != undefined) {
+                group.push(name);
+                names.splice(names.indexOf(name), 1);
+            }
+        }
+        group.sort();
+        groups.push(group);
     }
     printGroups(groups);
 }
 
-function printGroups(groups) {
-    var output = document.getElementById("resInput");
-    output.value = groups.map(group => group.join(',')).join('\r');
+function printGroups(group) {
+    let output = document.getElementById("resInput");
+    output.value = "";
+    for (let i = 0; i < group.length; i++) {
+        let currentGroup = "";
+        for (let j = 0; j < group[i].length; j++) {
+            currentGroup = group[i].join(",");
+        }
+        output.value += currentGroup + "\r";
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
